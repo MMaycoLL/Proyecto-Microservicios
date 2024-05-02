@@ -1,0 +1,4 @@
+rootProject.name = 'microservicios'
+
+include (':microservicios',':Server', ':Logs')
+

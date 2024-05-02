@@ -1,0 +1,66 @@
+version: '3.9'
+
+services:
+  java_app:
+    container_name: java_app
+    image: pee-java-app:1.0.0
+    build:
+      context: ../retos/servidor
+      dockerfile: Dockerfile
+    ports:
+      - "8084:8084"
+    environment:
+      - DATABASE_URL=jdbc:postgresql://java_db:5432/postgres
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PASSWORD=postgres
+    depends_on:
+      - java_db
+
+  kotlin_app:
+    container_name: kotlin_app
+    image: pee-kotlin-app:1.0.0
+    build:
+      context: ../retos/logs
+      dockerfile: Dockerfile
+    ports:
+      - "8089:8089"
+    environment:
+      - DATABASE_URL=jdbc:mysql://kotlin_db:3306/kotlin_db
+      - DATABASE_USERNAME=kotlin_db
+      - DATABASE_PASSWORD=password
+    depends_on:
+      - kotlin_db
+    restart: on-failure
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://kotlin_db:3306 || exit 1"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+
+  java_db:
+    container_name: java_db
+    image: postgres:12
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+
+  kotlin_db:
+    container_name: kotlin_db
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_USER: kotlin_db
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: kotlin_db
+      MYSQL_ROOT_PASSWORD : root
+
+  rabbitmq:
+    container_name: rabbit
+    image: rabbitmq:management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
