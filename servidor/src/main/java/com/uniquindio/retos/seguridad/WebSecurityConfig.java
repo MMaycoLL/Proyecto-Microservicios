@@ -33,6 +33,10 @@ public class WebSecurityConfig {
                         "/api/auth/**",
                         "/api/auth/publish",
                         "/api/usuario/**",
+                        "/health",
+                        "/health/live",
+                        "/health/ready",
+                        "/health/details",
                         "/api/cambiarContrasenia/**").permitAll()
                 .requestMatchers(
                         "/api/productoModerador/**").hasAuthority("MODERADOR")
