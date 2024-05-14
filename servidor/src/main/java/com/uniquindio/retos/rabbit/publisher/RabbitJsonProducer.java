@@ -18,10 +18,9 @@ public class RabbitJsonProducer {
     @Value("${rabbitmq.routing.json.key}")
     private String routingJsonKey;
 
-    private UsuarioGetDTO usuarioDTO;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RabbitJsonProducer.class);
-    private RabbitTemplate rabbitTemplate;
+    private final RabbitTemplate rabbitTemplate;
 
     public RabbitJsonProducer(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;

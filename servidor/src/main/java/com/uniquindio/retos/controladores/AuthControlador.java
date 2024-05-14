@@ -39,7 +39,7 @@ public class AuthControlador {
         LogDTO logDTO = new LogDTO("Tu aplicación", "LOGIN", "AuthControlador", LocalDateTime.now(), "Resumen del mensaje", "Se ha iniciado sesion correctamente");
         producerJson.sendJsonMessage(logDTO);
         return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK, false,
-                "Inicio de sesión exitoso"));
+                sesionServicio.login(sesionDTO)));
 
     }
 }
