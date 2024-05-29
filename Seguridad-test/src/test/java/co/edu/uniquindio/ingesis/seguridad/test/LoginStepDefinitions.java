@@ -15,7 +15,7 @@ import static io.restassured.RestAssured.given;
 
 public class LoginStepDefinitions {
 
-    private static final String RUTA_URL = "http://localhost:8080/login";
+    private static final String RUTA_URL = "http://localhost:8080/auth/login";
     private final Faker faker = new Faker();
     private Usuario usuario;
     private Response response;

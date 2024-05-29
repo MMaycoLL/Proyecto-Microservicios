@@ -1,4 +1,5 @@
 rootProject.name = 'microservicios'
 
-include (':microservicios',':Server', ':Logs')
+include (':microservicios',':servidor', ':Logs', ':health_check')
+include 'api_gateway'
 
