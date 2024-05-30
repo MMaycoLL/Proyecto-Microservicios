@@ -28,8 +28,7 @@ dependencies {
     implementation ("org.springframework.boot:spring-boot-starter-cache")
     implementation ("org.springframework.boot:spring-boot-starter-data-redis")
     implementation ("org.springframework.data:spring-data-redis:2.6.1")
-    implementation ("org.springframework.cloud:spring-cloud-starter-gateway-mvc")
-    implementation ("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
+
 
 }
 
