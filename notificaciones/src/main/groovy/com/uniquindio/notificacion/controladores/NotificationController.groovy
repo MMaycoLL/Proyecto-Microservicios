@@ -14,34 +14,34 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@AllArgsConstructor
 @EnableScheduling
 @RequestMapping("/api/notification")
-class NotificationController {
+public class NotificationController {
 
     @Autowired
-    final EmailServicio emailServicio
+    private final EmailServicio emailServicio;
+
+    public NotificationController(EmailServicio emailServicio) {
+        this.emailServicio = emailServicio;
+    }
 
     @Operation(summary = "Endpoint de notificaciones",
-            description = "Envía un email a un destinatario, se implementara para notificar cambios en los microservicios")
-
-
+            description = "Envía un email a un destinatario, se implementará para notificar cambios en los microservicios")
     @PostMapping("")
-    ResponseEntity<String> enviarEmail(
-            @RequestParam(name = "asunto", required = true) @Schema(description = "Asunto del correo") String asunto,
-            @RequestParam(name = "cuerpo", required = true) @Schema(description = "Cuerpo del correo") String cuerpo,
-            @RequestParam(name = "email", required = true) @Schema(description = "Dirección de correo electrónico del destinatario") String email)
-    {
+    public ResponseEntity<String> enviarEmail() {
+        // Datos quemados
+        String asunto = "Estado de los Microservicios";
+        String cuerpo = "Uno o más microservicios están caídos.";
+        String email = "mmmaycolll@hotmail.com";
 
-
-        // Crear un EmailDTO con los datos recibidos
-        EmailDTO emailDTO = new EmailDTO(asunto, cuerpo, email)
+        // Crear un EmailDTO con los datos quemados
+        EmailDTO emailDTO = new EmailDTO(asunto, cuerpo, email);
 
         try {
-            emailServicio.enviarEmail(emailDTO)
-            return ResponseEntity.ok("Email enviado exitosamente")
+            emailServicio.enviarEmail(emailDTO);
+            return ResponseEntity.ok("Email enviado exitosamente");
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error enviando el email: ${e.message}" as String)
+            return ResponseEntity.status(500).body("Error enviando el email: " + e.getMessage());
         }
     }
 }

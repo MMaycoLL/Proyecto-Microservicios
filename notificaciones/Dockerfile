@@ -14,5 +14,5 @@ RUN gradle bootJar
 #
 FROM eclipse-temurin:17-jdk-jammy
 ARG JAR_FILE=build/libs/*.jar
-COPY --from=build /home/gradle/src/build/libs/*.jar groovy-app.jar
-ENTRYPOINT ["java","-jar","groovy-app.jar"]
+COPY --from=build /home/gradle/src/build/libs/*.jar groovy-n-app.jar
+ENTRYPOINT ["java","-jar","groovy-n-app.jar"]
