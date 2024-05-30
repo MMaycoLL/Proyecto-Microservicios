@@ -1,6 +1,6 @@
 plugins {
     id ("groovy")
-    id("org.springframework.boot") version "3.2.3"
+    id("org.springframework.boot") version "3.2.5"
     id("io.spring.dependency-management") version "1.1.4"
 }
 
@@ -25,6 +25,11 @@ dependencies {
     implementation ("org.codehaus.groovy:groovy-all:3.0.9")
     implementation(kotlin("script-runtime"))
     testImplementation ("org.springframework.boot:spring-boot-starter-test")
+    implementation ("org.springframework.boot:spring-boot-starter-cache")
+    implementation ("org.springframework.boot:spring-boot-starter-data-redis")
+    implementation ("org.springframework.data:spring-data-redis:2.6.1")
+    implementation ("org.springframework.cloud:spring-cloud-starter-gateway-mvc")
+    implementation ("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
 
 }
 
