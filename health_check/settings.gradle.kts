@@ -1,1 +1,1 @@
-rootProject.name = "notificacion"
+rootProject.name = "health_check"
