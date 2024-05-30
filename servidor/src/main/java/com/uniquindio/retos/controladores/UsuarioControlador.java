@@ -1,29 +1,21 @@
 package com.uniquindio.retos.controladores;
 
+import com.uniquindio.retos.dto.LogDTO;
 import com.uniquindio.retos.dto.MensajeDTO;
 import com.uniquindio.retos.dto.UsuarioDTO;
-import com.uniquindio.retos.dto.UsuarioGetDTO;
 import com.uniquindio.retos.entidades.Usuario;
-import com.uniquindio.retos.repositorios.ModeradorRepo;
+import com.uniquindio.retos.rabbit.publisher.RabbitJsonProducer;
 import com.uniquindio.retos.repositorios.UsuarioRepo;
-import com.uniquindio.retos.servicios.interfaces.ModeradorServicio;
 import com.uniquindio.retos.servicios.interfaces.UsuarioServicio;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.uniquindio.retos.dto.LogDTO;
-import com.uniquindio.retos.rabbit.publisher.RabbitJsonProducer;
+
 import java.time.LocalDateTime;
-
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/usuario")

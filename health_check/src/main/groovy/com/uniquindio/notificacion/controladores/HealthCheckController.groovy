@@ -1,8 +1,8 @@
-package com.uniquindio.health_check.controladores
+package com.uniquindio.notificacion.controladores
 
-import com.uniquindio.health_check.dto.EmailDTO
-import com.uniquindio.health_check.dto.Microservicio
-import com.uniquindio.health_check.servicios.interfaces.EmailServicio
+import com.uniquindio.notificacion.dto.EmailDTO
+import com.uniquindio.notificacion.dto.Microservicio
+import com.uniquindio.notificacion.servicios.interfaces.EmailServicio
 import lombok.AllArgsConstructor
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

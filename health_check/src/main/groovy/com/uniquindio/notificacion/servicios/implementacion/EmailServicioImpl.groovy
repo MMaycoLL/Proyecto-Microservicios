@@ -1,8 +1,8 @@
-package com.uniquindio.health_check.servicios.implementacion
+package com.uniquindio.notificacion.servicios.implementacion
 
 
-import com.uniquindio.health_check.dto.EmailDTO
-import com.uniquindio.health_check.servicios.interfaces.EmailServicio
+import com.uniquindio.notificacion.dto.EmailDTO
+import com.uniquindio.notificacion.servicios.interfaces.EmailServicio
 import jakarta.mail.internet.MimeMessage
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper

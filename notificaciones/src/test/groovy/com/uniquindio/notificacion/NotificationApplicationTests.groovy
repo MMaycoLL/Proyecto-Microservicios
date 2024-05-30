@@ -1,10 +1,10 @@
-package com.uniquindio.health_check
+package com.uniquindio.notificacion
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-class HealthCheckApplicationTests {
+class NotificationApplicationTests {
 
     @Test
     void contextLoads() {

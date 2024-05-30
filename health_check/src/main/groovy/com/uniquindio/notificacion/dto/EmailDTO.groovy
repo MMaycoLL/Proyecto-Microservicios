@@ -1,4 +1,4 @@
-package com.uniquindio.health_check.dto
+package com.uniquindio.notificacion.dto
 
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
