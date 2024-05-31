@@ -3,10 +3,13 @@ package com.uniquindio.notificacion.controladores
 import com.uniquindio.notificacion.dto.EmailDTO
 import com.uniquindio.notificacion.dto.Microservicio
 import com.uniquindio.notificacion.servicios.interfaces.EmailServicio
+import io.swagger.v3.oas.annotations.Operation
 import lombok.AllArgsConstructor
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.cache.annotation.CachePut
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.scheduling.annotation.EnableScheduling
@@ -27,6 +30,9 @@ class HealthCheckController {
     final EmailServicio emailServicio
     final Logger logger = LoggerFactory.getLogger(HealthCheckController)
 
+    @Operation(summary = "Registrar microservicio",
+            description = "Registra un microservicio en el sistema de health check")
+    @CachePut(value = "microservicios", key = "#microservicio.nombre")
     @PostMapping("")
     ResponseEntity<String> registerMicroservicio(@RequestBody Microservicio microservicio) {
         if (microserviciosRegistrados.containsKey(microservicio.nombre)) {
@@ -36,6 +42,9 @@ class HealthCheckController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Microservicio registrado correctamente.")
     }
 
+    @Operation(summary = "Obtener estado de los microservicios",
+            description = "Obtiene el estado de todos los microservicios registrados")
+    @Cacheable("healthStatus")
     @GetMapping("")
     ResponseEntity<Map<String, String>> getHealth() {
         def healthStatus = [:]
@@ -57,25 +66,28 @@ class HealthCheckController {
         return ResponseEntity.ok(healthStatus as Map<String, String>)
     }
 
+    @Operation(summary = "Obtener estado de un microservicio",
+            description = "Obtiene el estado de un microservicio específico")
+    @Cacheable(value = "healthByMicroservicio", key = "#microservicio")
     @GetMapping("/{microservicio}")
-     ResponseEntity<Map<String, String>> getHealthByMicroservicio(@PathVariable String microservicio) {
+    ResponseEntity<Map<String, String>> getHealthByMicroservicio(@PathVariable String microservicio) {
         if (!microserviciosRegistrados.containsKey(microservicio)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap("message", "Microservicio no encontrado."));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap("message", "Microservicio no encontrado."))
         }
 
-        Microservicio servicio = microserviciosRegistrados.get(microservicio);
-        String url = servicio.getEndpoint();
-        String email = servicio.getEmailsNotificaciones();
+        Microservicio servicio = microserviciosRegistrados.get(microservicio)
+        String url = servicio.getEndpoint()
+        String email = servicio.getEmailsNotificaciones()
 
         try {
-            ResponseEntity<Map> response = restTemplate.getForEntity(url, Map.class);
-            String status = (String) response.getBody().get("status");
-            Map<String, String> healthStatus = new HashMap<>();
-            healthStatus.put("status", status);
-            healthStatus.put("email", email);
-            return ResponseEntity.ok(healthStatus);
+            ResponseEntity<Map> response = restTemplate.getForEntity(url, Map)
+            String status = response.body?.get("status")
+            Map<String, String> healthStatus = new HashMap<>()
+            healthStatus.put("status", status)
+            healthStatus.put("email", email)
+            return ResponseEntity.ok(healthStatus)
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonMap("error", "Error al obtener el estado del microservicio: " + e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonMap("error", "Error al obtener el estado del microservicio: " + e.getMessage()))
         }
     }
 
@@ -87,9 +99,7 @@ class HealthCheckController {
         }
     }
 
-    // Tarea programada para controles de salud periódicos
     @Scheduled(fixedDelay = 60000L)
-    // cada 5 segundos
     void checkHealth() {
         microserviciosRegistrados.each { nombre, microservicio ->
             String url = microservicio.endpoint
@@ -102,7 +112,6 @@ class HealthCheckController {
                     sendEmailNotification(microservicio.nombre, email, "Microservicio ${microservicio.nombre} no está saludable")
                 }
             } catch (RestClientException e) {
-                // Manejar errores de conexión específicamente
                 logger.error("Error connecting to microservicio {} at {}", microservicio.nombre, url, e)
                 sendEmailNotification(microservicio.nombre, email, "Error al conectar con microservicio ${microservicio.nombre}")
             } catch (Exception e) {
@@ -111,3 +120,5 @@ class HealthCheckController {
         }
     }
 }
+
+

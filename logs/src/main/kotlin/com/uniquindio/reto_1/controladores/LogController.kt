@@ -2,6 +2,7 @@ package com.uniquindio.reto_1.controladores
 
 import com.uniquindio.reto_1.entidades.Log
 import com.uniquindio.reto_1.servicios.LogService
+import io.swagger.v3.oas.annotations.Operation
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
@@ -10,10 +11,11 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDateTime
 
-@RestController
+@RestController("/api/logs")
 class LogController(private val logService: LogService) {
 
-    @GetMapping("/logs")
+    @Operation(summary = "Obtener los logs con opciones de paginación y filtrado por fecha y tipo de log")
+    @GetMapping("")
     fun getLogs(
         @RequestParam(required = false, defaultValue = "0") page: Int,
         @RequestParam(required = false, defaultValue = "10") size: Int,
